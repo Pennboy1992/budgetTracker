@@ -23,6 +23,7 @@ def main():
                 save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\n"))
             if save_file == 1:
                 save_excel_file(budget)
+                print("Thank you for using our Budget Tracker")
                 break
             else:
                 print("Thank you for using our Budget Tracker")
