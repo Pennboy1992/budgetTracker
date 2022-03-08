@@ -1,3 +1,6 @@
+import pyexcel
+
+
 def main():
     budget = []
     print("Welcome to Budget Tracking with Roman")
@@ -13,7 +16,17 @@ def main():
         else:
             print("Here is your current items: ")
             print(budget)
-            break
+            try:
+                save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\n"))
+            except ValueError:
+                print("Please enter a valid choice (1 or 2)")
+                save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\n"))
+            if save_file == 1:
+                save_excel_file(budget)
+                break
+            else:
+                print("Thank you for using our Budget Tracker")
+                break
 
 
 def budget_item(arr):
@@ -31,8 +44,14 @@ def budget_item(arr):
         pay = float(input("How much will you be making from this source of income this month: "))
     else:
         pay = float(input("How much is this expense costing you per month: "))
-    arr.append({"item": item_name, "type": "Income" if income_or_debit == 1 else "Expense", "amount": round(pay, 2)})
+    arr.append({"Item": item_name, "Type": "Income" if income_or_debit == 1 else "Expense", "Amount": round(pay, 2)})
     return arr
+
+
+def save_excel_file(arr):
+    filename = input("\nWhat is the name of the *.xls file? ")
+    pyexcel.save_as(records=arr, dest_file_name=f'{filename}.xls')
+    print("The file " + filename + ".xls should be in your local directory")
 
 
 if __name__ == '__main__':
