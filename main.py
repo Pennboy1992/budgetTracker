@@ -54,6 +54,13 @@ def save_excel_file(arr):
     pyexcel.save_as(records=arr, dest_file_name=f'{filename}.xls')
     print("The file " + filename + ".xls should be in your local directory")
 
+def update_budget(arr,):
+    for item in arr:
+        print(item)
+    item_name = input("Which item would you like to update?(Enter the fullname of the item you wish to update): \n")
+    item = filter(lambda x: x["Item"] == item_name, arr)
+
+
 
 if __name__ == '__main__':
     main()
