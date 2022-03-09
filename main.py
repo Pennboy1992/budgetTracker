@@ -64,13 +64,45 @@ def save_excel_file(arr):
 
 
 def update_budget(arr):
+    new_dict = {}
     for item in arr:
         print(item)
     item_name = input("Which item would you like to update?(Enter the fullname of the item you wish to update): \n")
     item = list(filter(lambda x: x["Item"] == item_name, arr))[0]
     print(item)
+    try:
+        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No"))
+        name = input("What would you like to change the name to?: ")
+    except ValueError:
+        print("Please enter a valid choice(1 or 2)")
+        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No"))
+        name = input("What would you like to change the name to?: ")
+
+    if update_name == 1:
+        new_dict['Item'] = name
+
+    try:
+        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense"))
+    except ValueError:
+        print("Please enter a valid choice(1 or 2)")
+        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense"))
+
+    if update_type == 1:
+        new_dict['Type'] = 'Income'
+    else:
+        new_dict['Type'] = 'Expense'
+
+    amount = float(input("What is the new amount for this item(if no changes enter 0): "))
+
+    if amount == 0:
+        new_dict['Amount'] = item['Amount']
+    else:
+        new_dict['Amount'] = amount
+
     arr.remove(item)
-    print(arr)
+    item.update(new_dict)
+    arr.append(item)
+    return arr
 
 
 def remove_item(arr):
@@ -91,8 +123,17 @@ def stats(arr):
         else:
             total_expenses += item['Amount']
 
-    print(f"Your total income this month is: {total_income: .2f}")
-    print(f"Your total expenses this months is: {total_expenses: .2f}")
+    amount_list_income = [item['Amount'] for item in arr if item['Type'] == 'Income']
+    amount_list_expense = [item['Amount'] for item in arr if item['Type'] == 'Expense']
+
+    highest_income = list(filter(lambda x: x['Amount'] == max(amount_list_income), arr))[0]
+    highest_expense = list(filter(lambda x: x['Amount'] == max(amount_list_expense), arr))[0]
+
+    print(f"Your total income this month is: ${total_income: .2f}.")
+    print(f"Your total expenses this months is: ${total_expenses: .2f}.")
+    print(f"Your highest source of income is your {highest_income['Item']} at ${highest_income['Amount']:.2f} per month.")
+    print(f"Your highest expense is your {highest_expense['Item']} which is costing ${highest_expense['Amount']:.2f} "
+          f"per month.")
 
 
 if __name__ == '__main__':
