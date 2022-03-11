@@ -1,6 +1,7 @@
 import pyexcel
-from tabulate import tabulate
 import pyfiglet
+from update import update_budget
+from table import table
 
 
 def main():
@@ -68,51 +69,6 @@ def save_excel_file(arr):
     print("The file " + filename + ".xls has been created and should be in your local directory")
 
 
-def update_budget(arr):
-    new_dict = {}
-    print(table(arr))
-    item_name = input("Which item would you like to update?(Enter the fullname of the item you wish to update): \n")
-    item = list(filter(lambda x: x["Item"] == item_name, arr))[0]
-    print(item)
-    try:
-        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No\nEnter Corresponding "
-                                "Number: "))
-        name = input("What would you like to change the name to?: ")
-    except ValueError:
-        print("Please enter a valid choice(1 or 2)")
-        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No\nEnter Corresponding "
-                                "Number: "))
-        name = input("What would you like to change the name to?: ")
-
-    if update_name == 1:
-        new_dict['Item'] = name
-
-    try:
-        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense\nEnter "
-                                "Corresponding Number: "))
-    except ValueError:
-        print("Please enter a valid choice(1 or 2)")
-        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense\nEnter "
-                                "Corresponding Number: "))
-
-    if update_type == 1:
-        new_dict['Type'] = 'Income'
-    else:
-        new_dict['Type'] = 'Expense'
-
-    amount = float(input("What is the new amount for this item(if no changes enter 0): "))
-
-    if amount == 0:
-        new_dict['Amount'] = item['Amount']
-    else:
-        new_dict['Amount'] = amount
-
-    arr.remove(item)
-    item.update(new_dict)
-    arr.append(item)
-    return arr
-
-
 def remove_item(arr):
     print(table(arr))
     item_name = input("Which item would you like to update?(Enter the fullname of the item you wish to update): \n")
@@ -123,7 +79,7 @@ def remove_item(arr):
 
 
 def stats(arr):
-    if len(arr) >= 2:
+    if len(arr) > 2:
         total_income = 0
         total_expenses = 0
         for item in arr:
@@ -152,13 +108,7 @@ def stats(arr):
         print("We do not have enough data at this time to show budget statistics at this time.\n\n")
 
 
-def table(arr_to_table):
-    table_arr = []
-    for items in arr_to_table:
-        table_arr.append([items['Item'], items['Type'], items['Amount']])
 
-    headers = ["Source", "Type", "Amount"]
-    return tabulate(table_arr, headers, tablefmt="pretty")
 
 
 if __name__ == '__main__':
