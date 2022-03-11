@@ -16,7 +16,7 @@ def budget():
                                  "item \n4. Print Stats\n5. Import Excel File\n6. Quit\nEnter Corresponding Number: "))
         except ValueError:
             print("Please enter a valid choice (1 or 2)")
-            new_item = int(input("What would you like to do?: \n1. Enter a new item\n 2. Update an item\n3. Remove an "
+            new_item = int(input("What would you like to do?: \n1. Enter a new item\n2. Update an item\n3. Remove an "
                                  "item \n4. Print Stats \n5. Import Excel File\n6. Quit\nEnter Corresponding Number: "))
 
         if new_item == 1:
