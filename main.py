@@ -1,5 +1,6 @@
 from budget import budget
 
+# Gateway into the program
 def main():
     budget()
 

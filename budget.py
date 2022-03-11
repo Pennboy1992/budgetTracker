@@ -1,4 +1,3 @@
-from table import table
 from stats import stats
 from update import update_budget
 from new_item import budget_item
@@ -6,7 +5,7 @@ from excel import *
 from remove import remove_item
 import pyfiglet
 
-
+# Main function of the program that leads to all other functions into the program
 def budget():
     budget_arr = []
     welcome_text = pyfiglet.figlet_format("Budget Tracker", font="slant")

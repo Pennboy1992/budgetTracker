@@ -1,5 +1,6 @@
 from table import table
 
+# Function that is able to update every attribute of an entry in the budget tracker
 def update_budget(arr):
     new_dict = {}
     print(table(arr))
