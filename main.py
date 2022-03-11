@@ -1,4 +1,5 @@
 import pyexcel
+from tabulate import tabulate
 
 
 def main():
@@ -22,13 +23,15 @@ def main():
         elif new_item == 4:
             stats(budget)
         else:
-            print("Here is your current items: ")
-            print(budget)
+            print("Here are your current items: ")
+            print(table(budget))
             try:
-                save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\n"))
+                save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\nEnter "
+                                      "Corresponding Number: "))
             except ValueError:
                 print("Please enter a valid choice (1 or 2)")
-                save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\n"))
+                save_file = int(input("Would you like to save this to an excel file?: \n1.Yes\n2.No\nEnter "
+                                      "Corresponding Number: "))
             if save_file == 1:
                 save_excel_file(budget)
                 print("Thank you for using our Budget Tracker")
@@ -60,32 +63,35 @@ def budget_item(arr):
 def save_excel_file(arr):
     filename = input("\nWhat is the name of the *.xls file? ")
     pyexcel.save_as(records=arr, dest_file_name=f'{filename}.xls')
-    print("The file " + filename + ".xls should be in your local directory")
+    print("The file " + filename + ".xls has been created and should be in your local directory")
 
 
 def update_budget(arr):
     new_dict = {}
-    for item in arr:
-        print(item)
+    print(table(arr))
     item_name = input("Which item would you like to update?(Enter the fullname of the item you wish to update): \n")
     item = list(filter(lambda x: x["Item"] == item_name, arr))[0]
     print(item)
     try:
-        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No"))
+        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No\nEnter Corresponding "
+                                "Number: "))
         name = input("What would you like to change the name to?: ")
     except ValueError:
         print("Please enter a valid choice(1 or 2)")
-        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No"))
+        update_name = int(input("Would you like to update the name of this item?\n1. Yes\n2. No\nEnter Corresponding "
+                                "Number: "))
         name = input("What would you like to change the name to?: ")
 
     if update_name == 1:
         new_dict['Item'] = name
 
     try:
-        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense"))
+        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense\nEnter "
+                                "Corresponding Number: "))
     except ValueError:
         print("Please enter a valid choice(1 or 2)")
-        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense"))
+        update_type = int(input("Will this be an income or an expense now?:\n1. Income\n2. Expense\nEnter "
+                                "Corresponding Number: "))
 
     if update_type == 1:
         new_dict['Type'] = 'Income'
@@ -106,13 +112,13 @@ def update_budget(arr):
 
 
 def remove_item(arr):
-    for item in arr:
-        print(item)
+    print(table(arr))
     item_name = input("Which item would you like to update?(Enter the fullname of the item you wish to update): \n")
     item = list(filter(lambda x: x["Item"] == item_name, arr))[0]
     print(item)
     arr.remove(item)
-    print(arr)
+    print(table(arr))
+
 
 def stats(arr):
     total_income = 0
@@ -129,11 +135,24 @@ def stats(arr):
     highest_income = list(filter(lambda x: x['Amount'] == max(amount_list_income), arr))[0]
     highest_expense = list(filter(lambda x: x['Amount'] == max(amount_list_expense), arr))[0]
 
+    print("These are your current items: \n")
+    print(table(arr))
+
     print(f"Your total income this month is: ${total_income: .2f}.")
     print(f"Your total expenses this months is: ${total_expenses: .2f}.")
-    print(f"Your highest source of income is your {highest_income['Item']} at ${highest_income['Amount']:.2f} per month.")
+    print(
+        f"Your highest source of income is your {highest_income['Item']} at ${highest_income['Amount']:.2f} per month.")
     print(f"Your highest expense is your {highest_expense['Item']} which is costing ${highest_expense['Amount']:.2f} "
           f"per month.")
+
+
+def table(arr_to_table):
+    table_arr = []
+    for items in arr_to_table:
+        table_arr.append([items['Item'], items['Type'], items['Amount']])
+
+    headers = ["Source", "Type", "Amount"]
+    return tabulate(table_arr, headers, tablefmt="pretty")
 
 
 if __name__ == '__main__':
